@@ -1,0 +1,39 @@
+#!/bin/bash
+
+echo apache2 auto site installer;
+echo create by zainras;
+echo ==========================
+
+echo site name ex: example.local
+read sitename
+
+#echo path location ex: /var/www/exemple.local
+#read path
+
+echo create folder : /var/www/$sitename;
+mkdir -p /var/www/$sitename
+
+read -r -d '' siteAvailable <<- EOM
+<VirtualHost *:80>
+	ServerName $sitename
+	ServerAdmin webmaster@$sitename
+	DocumentRoot /var/www/$sitename
+<Directory /var/www/$sitename>
+    Options Indexes FollowSymLinks
+    AllowOverride All
+    Require all granted
+</Directory>
+</VirtualHost>
+EOM
+
+echo create site conf : /etc/apache2/sites-available/$sitename.conf
+echo "$siteAvailable" > /etc/apache2/sites-available/$sitename.conf
+
+echo enable site : $sitename
+a2ensite $sitename.conf
+
+echo reload apache2 config
+service apache2 reload
+
+echo add hostaname on etc/hosts
+echo "127.0.0.1	$sitename" >> /etc/hosts
