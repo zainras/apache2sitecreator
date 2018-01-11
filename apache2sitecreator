@@ -7,18 +7,18 @@ echo ==========================
 echo site name ex: example.local
 read sitename
 
-#echo path location ex: /var/www/exemple.local
-#read path
+echo path location ex: /var/www/exemple.local/public
+read pathRoot
 
-echo create folder : /var/www/$sitename;
-mkdir -p /var/www/$sitename
+echo create folder : $pathRoot;
+mkdir -p $pathRoot
 
 read -r -d '' siteAvailable <<- EOM
 <VirtualHost *:80>
 	ServerName $sitename
 	ServerAdmin webmaster@$sitename
-	DocumentRoot /var/www/$sitename
-<Directory /var/www/$sitename>
+	DocumentRoot $pathRoot
+<Directory $pathRoot>
     Options Indexes FollowSymLinks
     AllowOverride All
     Require all granted
