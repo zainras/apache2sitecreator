@@ -11,7 +11,9 @@ echo path location ex: /var/www/exemple.local/public
 read pathRoot
 
 echo create folder : $pathRoot;
-mkdir -p $pathRoot
+mkdir -p $pathRoot;
+chown -R $SUDO_USER $pathRoot;
+chmod -R 755 $pathRoot;
 
 read -r -d '' siteAvailable <<- EOM
 <VirtualHost *:80>
