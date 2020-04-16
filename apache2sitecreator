@@ -10,6 +10,9 @@ read sitename
 echo path location ex: /var/www/exemple.local/public
 read pathRoot
 
+echo set hostname to etc/host ? [yes/no]
+read isaddhost
+
 echo create folder : $pathRoot;
 mkdir -p $pathRoot;
 chown -R $SUDO_USER $pathRoot;
@@ -34,8 +37,14 @@ echo "$siteAvailable" > /etc/apache2/sites-available/$sitename.conf
 echo enable site : $sitename
 a2ensite $sitename.conf
 
+echo enable mod_rewrite "a2enmod rewrite"
+a2enmod rewrite
+
 echo reload apache2 config
 service apache2 reload
 
-echo add hostaname on etc/hosts
-echo "127.0.0.1	$sitename" >> /etc/hosts
+if [ "$isaddhost" == "yes" ]
+then
+	echo add hostname on etc/hosts
+	echo "127.0.0.1	$sitename" >> /etc/hosts
+fi
